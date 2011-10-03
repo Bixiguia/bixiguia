@@ -19,3 +19,6 @@ dist
 *.pyc
 *.pyo
 *.tmp*
+.codeintel
+bixiguia.sublime-project
+bixiguia.sublime-workspace
