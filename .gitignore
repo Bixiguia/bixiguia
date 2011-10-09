@@ -3,6 +3,7 @@
 *.egg
 *.EGG
 *.EGG-INFO
+.DS_Store
 bin
 build
 develop-eggs
@@ -22,3 +23,6 @@ dist
 .codeintel
 bixiguia.sublime-project
 bixiguia.sublime-workspace
+merged_static
+cache
+local_settings.py
