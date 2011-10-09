@@ -1,0 +1,18 @@
+{% load thumbnail %}<html>
+<head>
+<title>Opa!</title>
+</head>
+<body>
+  <h1>{{ msg }}</h1>
+  <ul>
+  {% for foto in fotos %}
+    <li>
+    {% thumbnail foto.imagem "100x100" crop="center" as im %}
+        <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+    {% endthumbnail %}
+    </li>
+  </ul>
+  {% endfor %}
+
+</body>
+</html>
