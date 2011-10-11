@@ -1,13 +1,14 @@
 html, body {
     width: 100%;
-    height: 100%
+    height: 100%;
+    font-family: Arial, Verdana, Times New Roman, Georgia, Courier New;
 }
 
 body {
     margin-top: 0px;
     margin-right: 0px;
     margin-left: 0px;
-    margin-bottom: 0px
+    margin-bottom: 0px;
 }
 
 #mapa {
