@@ -112,7 +112,7 @@ var MapBoss = function(canvas, initOptions, markersClasses) {
 
             var events = [];
             if (getattr(self.defaultMarkerClass, 'events'))
-                events.append(getattr(self.defaultMarkerClass, 'events'));
+                events.push(getattr(self.defaultMarkerClass, 'events'));
 
             events = events.concat($.map(matchingClasses,
                             function(mclass) {return getattr(mclass, 'events');}
