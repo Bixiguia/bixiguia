@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import patterns, include, url
+from django.views.generic.simple import direct_to_template
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -6,6 +7,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('bixiguia.mapa.views',
     # Examples:
+    url(r'^globals.js$', direct_to_template, {'template': 'globals.js'}, name="globals_js"),
+
     url(r'^$', 'index', name='mapa.index'),
     url(r'^data/', include('bixiguia.guia.urls')),
 

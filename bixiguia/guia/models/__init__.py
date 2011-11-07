@@ -16,6 +16,9 @@ class Categoria(mixins.DataMixin):
     def __unicode__(self):
         return self.nome
 
+    def natural_key(self):
+        return self.nome
+
     class Meta:
         ordering = ['nome', ]
 

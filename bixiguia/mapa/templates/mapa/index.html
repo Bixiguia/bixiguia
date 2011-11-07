@@ -3,11 +3,13 @@
 {% block extra_head %}
     <link href="{{ STATIC_URL }}css/mapa/geral.css" type="text/css" media="all" rel="stylesheet" />
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/lib/jquery-1.6.4.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/lib/MapBoss.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/mapa/mapa-init.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/mapa/data-load.js"></script>
 {% endblock %}
 
 {% block body %}
+    <div id="cabecalho">
+        <h1>BixiGuia</h1>
+    </div>
     <div id="mapa"></div>
 {% endblock %}

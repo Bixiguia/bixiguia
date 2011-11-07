@@ -17,6 +17,7 @@ def get_locais(request):
             models.Local.objects.filter(visivel=True).all(),
             fields=('nome', 'categoria', 'latitude', 'longitude', 'endereco'),
             ensure_ascii=False,
+            use_natural_keys=True,
             stream=response
     )
 
