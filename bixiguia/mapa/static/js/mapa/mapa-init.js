@@ -43,7 +43,11 @@ function showLocalDetails(marker){
     var wall = getPersistentDiv('wall');
     resizeWall('bind');
 
-    wall.css('display', 'block');
+    wall.css({
+        'display': 'block',
+        'opacity': 0
+    });
+
     wall.fadeTo("slow",  0.75);
 
     var container = getPersistentDiv('detalhamento');
@@ -52,8 +56,11 @@ function showLocalDetails(marker){
     $('#detalhamento').load(
         GLOBALS.URLS.detalha_local.replace('999', marker.data.nome_slug),
         function() {
-            container.css('display', 'block');
-            container.fadeTo("slow", 1, function(){
+            $('.btn', container).click(function(){
+                wall.fadeOut("slow");
+                container.fadeOut("slow");
+            });
+            container.fadeIn("slow", function(){
                 marker.raw.setAnimation(null);
                 $('#detalhamento .fotos a').colorbox({
                     rel:'fotos',
@@ -70,8 +77,8 @@ function showLocalDetails(marker){
     );
 
     wall.click(function(){
-        wall.fadeTo("slow", 0, function(){wall.hide();});
-        container.fadeTo("slow", 0, function(){container.hide();});
+        wall.fadeOut("slow");
+        container.fadeOut("slow");
     });
 
 

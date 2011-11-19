@@ -1,6 +1,7 @@
 {% load thumbnail %}
 <div class="local_container">
     <div class="cabecalho">
+        <input type="button" class="btn" value="Fechar">
         <div class="categoria">{{ local.categoria }}</div>
         <h2 class="nome">{{ local.nome }}</h2>
         <div class="endereco">{{ local.endereco }}{% if local.complemento %} - {{ local.complemento }}{% endif %}</div>
