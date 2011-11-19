@@ -50,6 +50,12 @@ class Local(mixins.DataMixin):
     def __unicode__(self):
         return '%s - %s' % (self.nome, self.endereco)
 
+    def fotos_visiveis(self):
+        return self.foto_set.filter(visivel=True).order_by('posicao')
+
+    def videos_visiveis(self):
+        return self.video_set.filter(visivel=True).order_by('posicao')
+
     class Meta:
         verbose_name_plural = u'Locais'
 

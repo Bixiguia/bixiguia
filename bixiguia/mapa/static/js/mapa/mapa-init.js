@@ -1,35 +1,32 @@
+function getMapSize(contract){
+    var mapPos = $('#mapa').offset();
+
+    if (typeof(contract) != "number")
+        contract = 0;
+
+    return {
+        'left': mapPos.left + contract,
+        'top': mapPos.top + contract,
+        'height': $('#mapa').outerHeight() - (contract * 2),
+        'width': $('#mapa').outerWidth() - (contract * 2)
+    };
+}
+
+function getPersistentDiv(id) {
+
+    var divEl;
+
+    if (!$('#' + id).length)
+        divEl = $('<div></div>')
+            .attr('id', id)
+            .appendTo($('body'));
+    else
+        divEl = $('#' + id);
+
+    return divEl;
+}
+
 function showLocalDetails(marker){
-    var maskHeight = $(document).height();
-    var maskWidth = $(window).width();
-
-    function getMapSize(contract){
-        var mapPos = $('#mapa').offset();
-
-        if (typeof(contract) != "number")
-            contract = 0;
-
-        return {
-            'left': mapPos.left + contract,
-            'top': mapPos.top + contract,
-            'height': $('#mapa').outerHeight() - (contract * 2),
-            'width': $('#mapa').outerWidth() - (contract * 2)
-        };
-    }
-
-    function getWall() {
-
-        var className = 'wall';
-        var wall;
-
-        if (!$('#' + className).length)
-            wall = $('<div></div>')
-                .attr('id', 'wall')
-                .appendTo($('body'));
-        else
-            wall = $('#' + className);
-
-        return wall;
-    }
 
     function resizeWall(bind) {
 
@@ -41,20 +38,40 @@ function showLocalDetails(marker){
             });
     }
 
-    var wall = getWall();
+    marker.raw.setAnimation(google.maps.Animation.BOUNCE);
+
+    var wall = getPersistentDiv('wall');
     resizeWall('bind');
 
-    wall.fadeTo("slow",0.75);
+    wall.css('display', 'block');
+    wall.fadeTo("slow",  0.75);
 
-    var container = $('<div>as</div>')
-        .attr('class', 'detalhes_local')
-        .appendTo($('body'));
-
+    var container = getPersistentDiv('detalhamento');
     container.css(getMapSize(60));
-    container.fadeIn("slow");
+
+    $('#detalhamento').load(
+        GLOBALS.URLS.detalha_local.replace('999', marker.data.nome_slug),
+        function() {
+            container.css('display', 'block');
+            container.fadeTo("slow", 1, function(){
+                marker.raw.setAnimation(null);
+                $('#detalhamento .fotos a').colorbox({
+                    rel:'fotos',
+                    'opacity': 0.7,
+                    'previous': 'Anterior',
+                    'next': 'Próxima',
+                    'close': 'Fechar',
+                    'current': 'imagem {current} de {total}',
+                    'maxHeight' : '90%',
+                    'maxWidth': '90%'
+                });
+            });
+        }
+    );
 
     wall.click(function(){
         wall.fadeTo("slow", 0, function(){wall.hide();});
+        container.fadeTo("slow", 0, function(){container.hide();});
     });
 
 
@@ -100,7 +117,10 @@ $(document).ready(function($){
             },
             [
                 {
-                    'markerOptions' : {'shadow': marksShadow},
+                    'markerOptions' : {
+                        'shadow': marksShadow,
+                        'icon': createColorMark(5)
+                    },
                     'events' : {
                         'click': showLocalDetails
                     }
@@ -127,7 +147,19 @@ $(document).ready(function($){
                 },
                 {
                     'markerOptions' : {'icon': createColorMark(5)},
-                    'filter': {'categoria':"Teatro"}
+                    'filter': {'categoria':"Gastronomia"}
+                },
+                {
+                    'markerOptions' : {'icon': createColorMark(6)},
+                    'filter': {'categoria':"Comércio"}
+                },
+                {
+                    'markerOptions' : {'icon': createColorMark(7)},
+                    'filter': {'categoria':"Noite"}
+                },
+                {
+                    'markerOptions' : {'icon': createColorMark(8)},
+                    'filter': {'categoria':"Mirante"}
                 }
 
             ]
