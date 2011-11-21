@@ -20,6 +20,12 @@ easy_install pip
 brew install libjpg
 brew install imagemagick
 
+# Installs PIL
+pip install PIL
+
+# Installs sorl-thumbnail
+pip install sorl-thumbnail
+
 # Installs Django
 pip install django
 
