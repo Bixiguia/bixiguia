@@ -26,5 +26,8 @@ pip install django
 # Installs postgresql
 brew install postgresql
 
+# Installs psycopg2
+pip install psycopg2
+
 # Creates Database bixiguia
 createdb bixiguia
