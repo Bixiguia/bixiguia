@@ -115,7 +115,7 @@ $(document).ready(function($){
 
     adjustMapSize('bind');
 
-    mapa = new MapBoss($('#mapa'),
+    mapEl = new MapBoss($('#mapa'),
             {
                 zoom: 16,
                 minZoom: 14,
@@ -172,7 +172,7 @@ $(document).ready(function($){
             ]
         );
 
-    mapa.loadMarkers(GLOBALS.URLS.lista_locais, {
+    mapEl.loadMarkers(GLOBALS.URLS.lista_locais, {
         'mapfunc': function(data){
             return {
                 'id':data.pk,
