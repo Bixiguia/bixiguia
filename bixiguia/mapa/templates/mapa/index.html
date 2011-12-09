@@ -4,25 +4,23 @@
     <link href="{{ STATIC_URL }}css/mapa/geral.css" type="text/css" media="all" rel="stylesheet" />
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/lib/MapBoss.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/page-inits.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/mapa/mapa-init.js"></script>
 {% endblock %}
 
 {% block body %}
     <div id="cabecalho">
+        <div class="fundo-logo">
+            <h1>BixiGuia</h1>
+        </div>
     </div>
-    <div>
-        <table width="100%">
-            <tr>
-                <td width="100%">
-                    <div id="inliner" style="width: 100%">
-                        <div align="left" style="position: static; display: inline; float: left; width: 20%">
-                            <p align="justify">O projeto Bixiguia é uma iniciativa que integra a Universidade Presbiteriana Mackenzie e a Associação Novolhar, e pretende contribuir para a revitalização e resgate da importância histórica do bairro do Bixiga. <br /><br />Tem como objetivo dispor à comunidade e aos visitantes um guia multimídia georreferenciado da região, com um acervo que contribua para o redescobrimento de pontos históricos, sociais e culturais, além de fórum de discussão sobre lugares públicos.<p>
-                        </div>
-                        <div id="mapa" align="left" style="position: static; display: inline; float: left; width: 80%">
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </table>
+    <div id="projeto">
+        <div class="container">
+            <a href="#" class="fechar"></a>
+            <h2>Sobre o projeto</h2>
+            <p>O projeto Bixiguia é uma iniciativa que integra a Universidade Presbiteriana Mackenzie e a Associação Novolhar, e pretende contribuir para a revitalização e resgate da importância histórica do bairro do Bixiga.</p>
+            <p>Tem como objetivo dispor à comunidade e aos visitantes um guia multimídia georreferenciado da região, com um acervo que contribua para o redescobrimento de pontos históricos, sociais e culturais, além de fórum de discussão sobre lugares públicos.<p>
+        </div>
     </div>
+    <div id="mapa" />
 {% endblock %}

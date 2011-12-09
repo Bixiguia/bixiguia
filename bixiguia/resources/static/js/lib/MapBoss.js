@@ -126,6 +126,19 @@ var MapBoss = function(canvas, initOptions, markersClasses) {
         });
     }
 
+    this.prepareResize = function() {
+        this.centerToReturn = this.map.getCenter();
+    };
+
+    this.checkResize = function(recenter) {
+        google.maps.event.trigger(this.map, 'resize');
+
+        if (this.centerToReturn && recenter) {
+            this.map.panTo(this.centerToReturn);
+            this.centerToReturn = undefined;
+        }
+    };
+
     this.loadMarkers = function(markers, options){
 
         options = $.extend(

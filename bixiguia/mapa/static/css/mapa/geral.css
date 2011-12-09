@@ -14,11 +14,6 @@ body {
     margin-right: 0px;
     margin-left: 0px;
     margin-bottom: 0px;
-    background:#feeccc;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9eedc', endColorstr='#f3daac'); /* IE */
-    background:-webkit-gradient(linear, left top, left bottom, from(#f9eedc), to(#f3daac)); /* webkit browsers */
-    background: -moz-linear-gradient(top,  #f9eedc,  #f3daac); /* Firefox 3.6+ */
-    border-bottom:6px solid #492f00;
 }
 
 a {
@@ -44,34 +39,76 @@ a.destaque:hover {
 
 
 p {
-    font-size:15pt;
-    margin:7px 15px 7px 7px;
-    padding:0;
-    color:#492f00;
-    font-family: serif;
+    margin:1em 0;
 }
 
 #cabecalho {
-    background-image: url("../../imagens/banner_header.jpg");
+    background-image: url("../../imagens/cabecalho/fundo.jpg");
     width:100%;
+    height:80px;
     line-height:20px;
-    padding:25px 60px 160px;
+    padding:0;
     border-bottom:6px solid #492f00;
 }
 
 #cabecalho h1 {
+    height:80px;
+    background: url("../../imagens/cabecalho/fundo-rosa-dos-ventos.png") no-repeat;
     font-size:22pt;
-    margin:0;
-    padding:0;
-    color:#492f00;
-    text-shadow: 0px 1px #FFF;
-    font-family: 'Coustard', serif;
+    color:#a97801;
+    text-shadow: 0px 0px 5px #FFF;
+    font-family: 'Anton', sans-serif;
     font-weight:bold;
+    margin-left:40px;
+    padding:45px 0 0 50px;
+}
+
+#projeto {
+    width:20%;
+    height:100%;
+    float:left;
+    background-color:#fdf0d9;
+    overflow:hidden;
+}
+
+#projeto .container {
+    padding:12px 20px;
+    font-size:10pt;
+    border-right: 1px solid #492F00;
+}
+
+
+#projeto .container .fechar {
+    float:right;
+    width:20px;
+    height:20px;
+    background:url("../../imagens/estrutura/close_button.png");
+}
+
+#projeto h2 {
+    float:left;
+    font-family: 'Coustard', serif;
+    font-size:14pt;
+    margin:1.2em 0;
+}
+
+#projeto .container p {
+    clear:both;
+
 }
 
 #mapa {
-    width: 100%;
+    width: 80%;
     height: 100%;
+    float:left
+}
+
+.logos-control {
+    width:86px;
+    height:20px;
+    background: url(../../imagens/mapa/logos-control.png);
+    margin:2px 5px 7px 6px;
+    cursor: pointer;
 }
 
 #wall {

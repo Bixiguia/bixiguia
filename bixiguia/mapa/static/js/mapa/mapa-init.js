@@ -185,4 +185,13 @@ $(document).ready(function($){
             };
         }
     });
+
+    var homeControlDiv = $('<div />')
+            .attr('class', 'logos-control')
+            .attr('title', 'Sobre o projeto...')
+            .click(projetoToggle)
+            .get(0);
+
+    homeControlDiv.index = 1;
+    mapEl.map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(homeControlDiv);
 });
