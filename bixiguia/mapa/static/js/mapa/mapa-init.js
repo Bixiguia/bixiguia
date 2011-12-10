@@ -99,10 +99,19 @@ $(document).ready(function($){
 
     function createColorMark(position) {
         return new google.maps.MarkerImage(
-            GLOBALS.URLS.STATIC_URL + 'imagens/mapa/marcadores.png',
+            GLOBALS.URLS.STATIC_URL + 'imagens/mapa/marcadores/comuns.png',
             new google.maps.Size(12, 20),
             new google.maps.Point(22 + (position*12), 0),
             new google.maps.Point(10, 20)
+        );
+    }
+
+    function createSpecialMark(position) {
+        return new google.maps.MarkerImage(
+            GLOBALS.URLS.STATIC_URL + 'imagens/mapa/marcadores/especiais.png',
+            new google.maps.Size(30, 40),
+            new google.maps.Point(position*30, 0),
+            new google.maps.Point(15, 38)
         );
     }
 
@@ -112,6 +121,14 @@ $(document).ready(function($){
         new google.maps.Point(0, 0),
         new google.maps.Point(10, 20)
     );
+
+    var specialMarksShadow = new google.maps.MarkerImage(
+        GLOBALS.URLS.STATIC_URL + 'imagens/mapa/marcadores/sombra-especiais.png',
+        new google.maps.Size(51, 40),
+        new google.maps.Point(0, 0),
+        new google.maps.Point(15, 38)
+    );
+
 
     adjustMapSize('bind');
 
@@ -124,6 +141,9 @@ $(document).ready(function($){
             },
             [
                 {
+                    'filter': {
+                        'model': 'guia.local'
+                    },
                     'markerOptions' : {
                         'shadow': marksShadow,
                         'icon': createColorMark(5)
@@ -167,20 +187,52 @@ $(document).ready(function($){
                 {
                     'markerOptions' : {'icon': createColorMark(8)},
                     'filter': {'categoria':"Mirante"}
+                },
+                {
+                    'filter': {
+                        'model': 'guia.specials'
+                    },
+                    'markerOptions' : {'shadow': specialMarksShadow},
+                    'events' : {
+                        'click': projetoToggle
+                    }
+                },
+                {
+                    'markerOptions' : {'icon': createSpecialMark(0)},
+                    'filter': {'nome':"Universidade Presbiteriana Mackenzie"}
+                },
+                {
+                    'markerOptions' : {'icon': createSpecialMark(1)},
+                    'filter': {'nome':"Associação Novolhar"}
                 }
-
             ]
         );
 
     mapEl.loadMarkers(GLOBALS.URLS.lista_locais, {
         'mapfunc': function(data){
+            data.fields.model = data.model;
             return {
-                'id':data.pk,
                 'lat':data.fields.latitude,
                 'lng':data.fields.longitude,
                 'data':data.fields,
                 'options': {
                     'title': data.fields.nome
+                }
+            };
+        }
+    });
+
+    mapEl.loadMarkers(GLOBALS.URLS.lista_locais_especiais, {
+        'mapfunc': function(data){
+            return {
+                'lat':data.latitude,
+                'lng':data.longitude,
+                'data': {
+                    'nome': data.nome,
+                    'model':'guia.specials'
+                },
+                'options': {
+                    'title': data.nome
                 }
             };
         }
