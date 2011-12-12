@@ -104,10 +104,10 @@ p {
 }
 
 .logos-control {
-    width:86px;
-    height:20px;
+    width:88px;
+    height:22px;
     background: url(../../imagens/mapa/logos-control.png);
-    margin:2px 5px 7px 6px;
+    margin:2px 5px 5px 6px;
     cursor: pointer;
 }
 
