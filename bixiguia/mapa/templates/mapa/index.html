@@ -1,20 +1,24 @@
 {% extends "comum/base.html" %}
 
-{% block extra_head %}
+{% block extra_css %}
     <link href="{{ STATIC_URL }}css/mapa/geral.css" type="text/css" media="all" rel="stylesheet" />
+{% endblock %}
+
+{% block extra_js %}
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/lib/bootstrap-2.1.1.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/lib/MapBoss.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/page-inits.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/mapa/mapa-init.js"></script>
 {% endblock %}
 
 {% block body %}
-    <div id="cabecalho">
+    <div id="cabecalho" style="display:none;">
         <div class="fundo-logo">
             <h1>Bixiguia</h1>
         </div>
     </div>
-    <div id="projeto">
+    <div id="projeto" style="display:none;">
         <div class="container">
             <a href="#" class="fechar"></a>
             <h2>Sobre o projeto</h2>
