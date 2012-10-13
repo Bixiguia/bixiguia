@@ -25,4 +25,4 @@ bixiguia.sublime-project
 bixiguia.sublime-workspace
 merged_static
 cache
-local_settings.py
+*/settings/local.py
