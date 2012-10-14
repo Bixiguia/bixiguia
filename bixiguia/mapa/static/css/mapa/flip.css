@@ -4,7 +4,7 @@
     top:12%;
     bottom:6%;
     right:0;
-    width:80%;
+    left:20%;
     z-index:101;
     background-color:rgba(255,255,255,0.85);
     border:4px solid rgba(25,0,0,0.2);
@@ -28,7 +28,6 @@
 }
 
 #flip .content {
-    height:94%;
     overflow:auto;
     padding:1% 1% 0 0;
 }
@@ -58,7 +57,6 @@
     float:left;
     width: 250px;
     font-size:10pt;
-    border-right:1px solid #EEE;
     padding-left:10px;
     overflow:hidden;
 }
@@ -73,13 +71,11 @@
     margin:0 290px 0 290px;
     padding-right: 30px;
     font-size:11pt;
-    border-right:1px solid #EEE;
 }
 
 #flip .videos {
     margin-top:40px;
     padding-top:20px;
-    border-top:1px solid #EEE;
 }
 
 #flip .videos ul {

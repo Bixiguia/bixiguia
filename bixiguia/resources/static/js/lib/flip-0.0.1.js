@@ -27,18 +27,22 @@
 
             this.headerEl.html(header);
             this.contentEl.html(content);
+            adjustInternalElements();
 
             if (self.flipEl.data('status') == 'hidden') {
+                var deltaAnimation = (self.elDimensions.position.left / 2);
 
                 this.flipEl.css({
                     'opacity':0,
                     'display':'block',
-                    'width': self.elDimensions.width * 0.9
+                    'left': (self.elDimensions.position.left + deltaAnimation),
+                    'right': (deltaAnimation * -1)
                 });
 
                 this.flipEl.animate({
                     opacity:1,
-                    width: self.elDimensions.width
+                    left: self.elDimensions.position.left,
+                    right: 0
                 }, speed, function() {
                     self.flipEl.attr('style', 'display:block;');
                     self.flipEl.data('status', 'visible');
@@ -52,9 +56,12 @@
                 speed = this.settings.speed;
 
             if (self.flipEl.data('status') == 'visible') {
+                var deltaAnimation = (self.elDimensions.position.left / 2);
+
                 this.flipEl.animate({
                     opacity:0,
-                    width: self.elDimensions.width * 0.9
+                    left: (self.elDimensions.position.left + deltaAnimation),
+                    right: (deltaAnimation * -1)
                 }, speed, function() {
                     self.flipEl.attr('style', 'display:none;');
                     self.flipEl.data('status', 'hidden');
@@ -62,6 +69,40 @@
             }
 
         };
+
+        function prepareForMeasure(func) {
+
+            var origCss = {};
+            var hidden = false;
+
+            if (self.flipEl.css('display') != 'block') {
+                hidden = true;
+
+                origCss = {
+                    'visibility': self.flipEl.css('visibility'),
+                    'display': self.flipEl.css('display')
+                };
+
+                self.flipEl.css({visibility:'hidden', display:'block'});
+            }
+
+            func();
+
+            if (hidden)
+                self.flipEl.css({
+                    visibility:origCss.visibility,
+                    display:origCss.display
+                });
+        }
+
+        function adjustInternalElements() {
+            prepareForMeasure(function() {
+                getSizePosition();
+                self.contentEl.height(
+                    self.elDimensions.height - self.headerEl.height()
+                );
+            });
+        }
 
         function createElements() {
             if (!$('#flip').length) {
@@ -91,41 +132,20 @@
         }
 
         function getSizePosition(){
-
-            var origCss = {};
-            var hidden = false;
-            var fcss = self.flipEl.css;
-
-            if (fcss('display') != 'block') {
-                hidden = true;
-
-                origCss = {
-                    'visibility': fcss('visibility'),
-                    'display': fcss('display')
+            prepareForMeasure(function() {
+                self.elDimensions = {
+                    'position': self.flipEl.position(),
+                    'width': self.flipEl.width(),
+                    'height': self.flipEl.height()
                 };
-
-                fcss({visibility:'hidden', display:'block'});
-            }
-
-
-            self.elDimensions = {
-                'position': self.flipEl.position(),
-                'width': self.flipEl.width(),
-                'height': self.flipEl.height()
-            };
-
-            if (hidden)
-                self.flipEl.css({
-                    visibility:origCss.visibility,
-                    display:origCss.display
-                });
+            });
         }
 
         function init() {
             createElements();
             createBinds();
             getSizePosition();
-            $(window).resize(getSizePosition);
+            $(window).resize(adjustInternalElements);
         }
 
 
