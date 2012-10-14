@@ -1,87 +1,84 @@
 {% load thumbnail %}
-<div class="local_container">
-    <div class="cabecalho">
-        <input type="button" class="btn" value="Fechar">
-        <div class="categoria">{{ local.categoria }}</div>
-        <h2 class="nome">{{ local.nome }}</h2>
-        <div class="endereco">{{ local.endereco }}{% if local.complemento %} - {{ local.complemento }}{% endif %}</div>
+<div class="cabecalho">
+    <div class="categoria">{{ local.categoria }}</div>
+    <h2 class="nome">{{ local.nome }}</h2>
+    <div class="endereco">{{ local.endereco }}{% if local.complemento %} - {{ local.complemento }}{% endif %}</div>
+</div>
+<div class="conteudo">
+    <div class="dados">
+        <h3>Dados</h3>
+        {% if local.site %}
+        <p>
+            <span class="label">Site:</span>
+            <a class="destaque" href="{{ local.site }}">{{ local.site }}</a>
+        </p>
+        {% endif %}
+        {% if local.email %}
+        <p>
+            <span class="label">Email:</span>
+            <a class="destaque" href="mailto:{{ local.email }}">{{ local.email }}</a>
+        </p>
+        {% endif %}
+        {% if local.ano_fundacao %}
+        <p>
+            <span class="label">Ano de fundação:</span>{{ local.ano_fundacao }}
+        </p>
+        {% endif %}
+        {% if local.contatos %}
+        <p>
+            <span class="label">Contatos:</span>{{ local.contatos }}
+        </p>
+        {% endif %}
+        {% if local.horario_funcionamento %}
+        <p>
+            <span class="label">Horário de funcionamento:</span>{{ local.horario_funcionamento }}
+        </p>
+        {% endif %}
     </div>
-    <div class="conteudo">
-        <div class="dados">
-            <h3>Dados</h3>
-            {% if local.site %}
-            <p>
-                <span class="label">Site:</span>
-                <a class="destaque" href="{{ local.site }}">{{ local.site }}</a>
-            </p>
-            {% endif %}
-            {% if local.email %}
-            <p>
-                <span class="label">Email:</span>
-                <a class="destaque" href="mailto:{{ local.email }}">{{ local.email }}</a>
-            </p>
-            {% endif %}
-            {% if local.ano_fundacao %}
-            <p>
-                <span class="label">Ano de fundação:</span>{{ local.ano_fundacao }}
-            </p>
-            {% endif %}
-            {% if local.contatos %}
-            <p>
-                <span class="label">Contatos:</span>{{ local.contatos }}
-            </p>
-            {% endif %}
-            {% if local.horario_funcionamento %}
-            <p>
-                <span class="label">Horário de funcionamento:</span>{{ local.horario_funcionamento }}
-            </p>
-            {% endif %}
-        </div>
-        <div class="fotos">
-            <h3>Fotos</h3>
-            {% if local.fotos_visiveis %}
-                <ul>
-                {% for foto in local.fotos_visiveis %}
-                    {% thumbnail foto.imagem "1200" as gde %}
-                        {% thumbnail foto.imagem "220" as peq %}
-                            <li>
-                                <a href="{{ gde.url }}" title="{{ foto.titulo }}">
-                                    <img src="{{ peq.url }}" width="{{ peq.x }}" height="{{ peq.y }}">
-                                    <span>{{ foto.titulo }}</span>
-                                </a>
-                            </li>
-                        {% endthumbnail %}
+    <div class="fotos">
+        <h3>Fotos</h3>
+        {% if local.fotos_visiveis %}
+            <ul>
+            {% for foto in local.fotos_visiveis %}
+                {% thumbnail foto.imagem "1200" as gde %}
+                    {% thumbnail foto.imagem "220" as peq %}
+                        <li>
+                            <a href="{{ gde.url }}" title="{{ foto.titulo }}">
+                                <img src="{{ peq.url }}" width="{{ peq.x }}" height="{{ peq.y }}">
+                                <span>{{ foto.titulo }}</span>
+                            </a>
+                        </li>
                     {% endthumbnail %}
-                {% endfor %}
-                </ul>
-            {% else %}
-                <p class="vazio">Não há fotos desse local</p>
-            {% endif %}
-        </div>
-        <div class="descricao">
-            <h3>Descrição</h3>
-            <p>{% if local.descricao %}
-                {{ local.descricao }}
-            {% else %}
-                <span class="vazio">Sem descrição</span>
-            {% endif %}
-            </p>
-        </div>
-        <div class="videos">
-            <h3>Vídeos</h3>
+                {% endthumbnail %}
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p class="vazio">Não há fotos desse local</p>
+        {% endif %}
+    </div>
+    <div class="descricao">
+        <h3>Descrição</h3>
+        <p>{% if local.descricao %}
+            {{ local.descricao }}
+        {% else %}
+            <span class="vazio">Sem descrição</span>
+        {% endif %}
+        </p>
+    </div>
+    <div class="videos">
+        <h3>Vídeos</h3>
 
-            {% if local.videos_visiveis %}
-                <ul>
-                {% for video in local.videos_visiveis %}
-                    <li>
-                        <a href="{{ video.url }}" title="{{ video.titulo }}">{{ video.titulo }}</a>
-                    </li>
-                {% endfor %}
-                </ul>
-            {% else %}
-                <p class="vazio">Não há videos desse local</p>
-            {% endif %}
-        </div>
+        {% if local.videos_visiveis %}
+            <ul>
+            {% for video in local.videos_visiveis %}
+                <li>
+                    <a href="{{ video.url }}" title="{{ video.titulo }}">{{ video.titulo }}</a>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p class="vazio">Não há videos desse local</p>
+        {% endif %}
     </div>
 </div>
 
