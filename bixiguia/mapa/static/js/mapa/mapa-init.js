@@ -1,100 +1,40 @@
-function getMapSize(contract){
-    var mapPos = $('#mapa').offset();
-
-    if (typeof(contract) != "number")
-        contract = 0;
-
-    return {
-        'left': mapPos.left + contract,
-        'top': mapPos.top + contract,
-        'height': $('#mapa').outerHeight() - (contract * 2),
-        'width': $('#mapa').outerWidth() - (contract * 2)
-    };
-}
-
-function getPersistentDiv(id) {
-
-    var divEl;
-
-    if (!$('#' + id).length)
-        divEl = $('<div></div>')
-            .attr('id', id)
-            .appendTo($('body'));
-    else
-        divEl = $('#' + id);
-
-    return divEl;
-}
-
 function showLocalDetails(marker){
-
-    function resizeWall(bind) {
-
-        wall.css(getMapSize());
-
-        if (typeof(bind) == 'string' && bind == 'bind')
-            $(window).resize(function(){
-                resizeWall();
-            });
-    }
 
     marker.raw.setAnimation(google.maps.Animation.BOUNCE);
 
-    var wall = getPersistentDiv('wall');
-    resizeWall('bind');
+    $.ajax({
+        url: GLOBALS.URLS.detalha_local.replace('999', marker.data.nome_slug),
+        success: function(data) {
+            flip.show(
+                $(data).filter('.cabecalho').html(),
+                $(data).filter('.conteudo').html()
+            );
 
-    wall.css({
-        'display': 'block',
-        'opacity': 0
-    });
-
-    wall.fadeTo("slow",  0.75);
-
-    var container = getPersistentDiv('detalhamento');
-    container.css(getMapSize(60));
-
-    $('#detalhamento').load(
-        GLOBALS.URLS.detalha_local.replace('999', marker.data.nome_slug),
-        function() {
-            $('.btn', container).click(function(){
-                wall.fadeOut("slow");
-                container.fadeOut("slow");
+            $('#flip .fotos a').colorbox({
+                rel:'fotos',
+                'opacity': 0.7,
+                'previous': 'Anterior',
+                'next': 'Próxima',
+                'close': 'Fechar',
+                'current': 'imagem {current} de {total}',
+                'maxHeight' : '80%',
+                'maxWidth': '80%'
             });
-            container.fadeIn("slow", function(){
-                marker.raw.setAnimation(null);
-                $('#detalhamento .fotos a').colorbox({
-                    rel:'fotos',
-                    'opacity': 0.7,
-                    'previous': 'Anterior',
-                    'next': 'Próxima',
-                    'close': 'Fechar',
-                    'current': 'imagem {current} de {total}',
-                    'maxHeight' : '90%',
-                    'maxWidth': '90%'
-                });
-            });
+
+            marker.raw.setAnimation(null);
         }
-    );
-
-    wall.click(function(){
-        wall.fadeOut("slow");
-        container.fadeOut("slow");
     });
-
-
 }
 
 $(document).ready(function($){
 
-    function adjustMapSize(bind){
-        var winHeight = $(window).height();
-        var headerHeight = $('#cabecalho').outerHeight();
-        $('#mapa').css('height', winHeight - headerHeight);
+    flip = Flip();
 
-        if (typeof(bind) == 'string' && bind == 'bind')
-            $(window).resize(function(){
-                adjustMapSize();
-            });
+    function projetoToggle() {
+        flip.show(
+            $('#projeto-info .header').html(),
+            $('#projeto-info .content').html()
+        );
     }
 
     function createColorMark(position) {
@@ -130,9 +70,7 @@ $(document).ready(function($){
     );
 
 
-    adjustMapSize('bind');
-
-    mapEl = new MapBoss($('#mapa'),
+    mapEl = new MapBoss($('#map_canvas'),
             {
                 zoom: 16,
                 minZoom: 14,
@@ -246,4 +184,7 @@ $(document).ready(function($){
 
     homeControlDiv.index = 1;
     mapEl.map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(homeControlDiv);
+
+
+    google.maps.event.addListenerOnce(mapEl.map, 'idle', projetoToggle);
 });

@@ -9,7 +9,10 @@ admin.autodiscover()
 
 urlpatterns = patterns('bixiguia.mapa.views',
     # Examples:
-    url(r'^globals.js$', direct_to_template, {'template': 'globals.js'}, name="globals_js"),
+    url(r'^globals.js$', direct_to_template, {
+        'template': 'globals.js',
+        'mimetype': 'application/javascript'
+    }, name="globals_js"),
 
     url(r'^$', 'index', name='mapa.index'),
     url(r'^data/', include('bixiguia.guia.urls')),
