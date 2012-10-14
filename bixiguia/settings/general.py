@@ -98,6 +98,10 @@ TEMPLATE_DIRS = (
     path.abspath(path.join(CUR_SETTINGS_DIR, '../resources/templates'))
 )
 
+SERIALIZATION_MODULES = {
+    'json': 'wadofstuff.django.serializers.json'
+}
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -109,6 +113,7 @@ INSTALLED_APPS = (
     'bixiguia.guia',
     'bixiguia.mapa',
 
+    'south',
     'sorl.thumbnail',
 
     'django.contrib.admin',
