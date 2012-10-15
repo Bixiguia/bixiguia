@@ -149,7 +149,7 @@ $(document).ready(function($){
                             },
                             'markerOptions' : {'shadow': specialMarksShadow},
                             'events' : {
-                                'click': projetoToggle
+                                'click': function(){projetoToggle();}
                             }
                         },
                         {
@@ -202,9 +202,7 @@ $(document).ready(function($){
                     .get(0);
 
                 mlControlButton.index = 1;
-                mapEl.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(mlControlButton);
-
-                mlControlButton
+                //mapEl.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(mlControlButton);
             }
         );
     }
