@@ -24,22 +24,6 @@ var MapBoss = function(canvas, initOptions, markersClasses) {
     this.defaultMarkerClass = {'markerOptions':{},'events':{}};
 
 
-    /*  se for passado um objeto como parâmetro 'markersClasses', ele
-        é definido como classe padrão para todos marcadores */
-    if ($.isPlainObject(markersClasses))
-        this.defaultMarkerClass = markersClasses;
-
-    /*  se for passado um array, o último item definido sem nome e filtro
-        é usado como classe padrão e é removido da lista de classes disponiveis */
-    else if ($.isArray(markersClasses))
-        $.each(markersClasses, function(index, mclass){
-            if (!getattr(mclass, 'name') && !getattr(mclass, 'filter'))
-                self.defaultMarkerClass = mclass;
-            else
-                self.avaliableMarkerClasses.push(mclass);
-        });
-
-
     function getattr(obj, name, defvalue) {
         /*  retorna o valor do atributo de um objeto se ele existe,
             senão retorna devalue */
@@ -126,6 +110,24 @@ var MapBoss = function(canvas, initOptions, markersClasses) {
         });
     }
 
+    this.setFilters = function(markersClasses) {
+
+        /*  se for passado um objeto como parâmetro 'markersClasses', ele
+            é definido como classe padrão para todos marcadores */
+        if ($.isPlainObject(markersClasses))
+            this.defaultMarkerClass = markersClasses;
+
+        /*  se for passado um array, o último item definido sem nome e filtro
+            é usado como classe padrão e é removido da lista de classes disponiveis */
+        else if ($.isArray(markersClasses))
+            $.each(markersClasses, function(index, mclass){
+                if (!getattr(mclass, 'name') && !getattr(mclass, 'filter'))
+                    self.defaultMarkerClass = mclass;
+                else
+                    self.avaliableMarkerClasses.push(mclass);
+            });
+    };
+
     this.prepareResize = function() {
         this.centerToReturn = this.map.getCenter();
     };
@@ -202,6 +204,8 @@ var MapBoss = function(canvas, initOptions, markersClasses) {
             });
         });
     };
+
+    this.setFilters(markersClasses);
 
     /* instancia o mapa */
     this.map = new google.maps.Map(canvas, initOptions);

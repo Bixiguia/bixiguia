@@ -6,4 +6,6 @@ urlpatterns = patterns('bixiguia.guia.views',
     url(r'^locais$', 'get_locais', name='guia.locais'),
     url(r'^locais/(?P<local_slug>[0-9a-z_-]+)$', 'get_local', name='guia.local'),
     url(r'^locais_especiais$', direct_to_template, {'template': 'mapa/locais_especiais.json'}, name='guia.locais_especiais'),
+
+    url(r'^categorias$', 'get_categorias', name='guia.categorias'),
 )

@@ -20,10 +20,16 @@
             $.extend(this.settings, options);
         }
 
-        this.show = function(header, content, speed) {
+        this.show = function(header, content, speed, callback) {
 
             if (typeof speed == "undefined")
                 speed = this.settings.speed;
+            else if (typeof speed == "function") {
+                callback = speed;
+                speed = this.settings.speed;
+            }
+
+
 
             this.headerEl.html(header);
             this.contentEl.html(content);
@@ -46,6 +52,8 @@
                 }, speed, function() {
                     self.flipEl.attr('style', 'display:block;');
                     self.flipEl.data('status', 'visible');
+                    if (typeof callback == 'function')
+                        callback();
                 });
             }
         };
