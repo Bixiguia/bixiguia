@@ -19,7 +19,7 @@ class NovoModelAdmin(admin.ModelAdmin):
 
 class CategoriaAdmin(NovoModelAdmin):
     date_hierarchy = 'data_criacao'
-    list_display = ('nome', 'visivel')
+    list_display = ('nome', 'icon_index', 'visivel')
     list_display_links = ('nome',)
     prepopulated_fields = {"nome_slug": ("nome",)}
     search_fields = ('nome',)

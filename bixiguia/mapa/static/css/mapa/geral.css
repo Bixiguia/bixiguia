@@ -36,3 +36,28 @@ a:hover {
 #projeto-info {
     display:none;
 }
+
+
+.btn-categorias {
+    font-weight:bold;
+    margin:4px 6px;
+}
+
+.markers-label {
+    text-align:center;
+    color:#333;
+    font-family:Arial,sans-serif;
+    font-size:13px;
+    background-color:#FFF;
+    padding:1px 6px;
+    border:1px solid #717B87;
+    border-width:1px 1px 1px 0;
+
+/*    background-color:#FEE;
+    padding:2px 6px;
+    border:2px solid rgba(25,0,0,0.2);
+    font-weight:bold;
+    width:10em;
+
+    cursor: pointer;
+*/}

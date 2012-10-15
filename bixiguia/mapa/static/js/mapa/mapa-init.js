@@ -1,3 +1,4 @@
+
 function showLocalDetails(marker){
 
     marker.raw.setAnimation(google.maps.Animation.BOUNCE);
@@ -30,10 +31,11 @@ $(document).ready(function($){
 
     flip = Flip();
 
-    function projetoToggle() {
+    function projetoToggle(callback) {
         flip.show(
             $('#projeto-info .header').html(),
-            $('#projeto-info .content').html()
+            $('#projeto-info .content').html(),
+            callback
         );
     }
 
@@ -71,120 +73,139 @@ $(document).ready(function($){
 
 
     mapEl = new MapBoss($('#map_canvas'),
-            {
-                zoom: 16,
-                minZoom: 14,
-                center: new google.maps.LatLng(-23.55909, -46.64582),
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            },
-            [
-                {
-                    'filter': {
-                        'model': 'guia.local'
-                    },
-                    'markerOptions' : {
-                        'shadow': marksShadow,
-                        'icon': createColorMark(5)
-                    },
-                    'events' : {
-                        'click': showLocalDetails
-                    }
-                },
-                {
-                    'markerOptions' : {'icon': createColorMark(0)},
-                    'filter': {'categoria':"Cultura"}
-                },
-                {
-                    'markerOptions' : {'icon': createColorMark(1)},
-                    'filter': {'categoria':"Igreja"}
-                },
-                {
-                    'markerOptions' : {'icon': createColorMark(2)},
-                    'filter': {'categoria':"Museu"}
-                },
-                {
-                    'markerOptions' : {'icon': createColorMark(3)},
-                    'filter': {'categoria':"Patrimônio"}
-                },
-                {
-                    'markerOptions' : {'icon': createColorMark(4)},
-                    'filter': {'categoria':"Praça"}
-                },
-                {
-                    'markerOptions' : {'icon': createColorMark(5)},
-                    'filter': {'categoria':"Gastronomia"}
-                },
-                {
-                    'markerOptions' : {'icon': createColorMark(6)},
-                    'filter': {'categoria':"Comércio"}
-                },
-                {
-                    'markerOptions' : {'icon': createColorMark(7)},
-                    'filter': {'categoria':"Noite"}
-                },
-                {
-                    'markerOptions' : {'icon': createColorMark(8)},
-                    'filter': {'categoria':"Mirante"}
-                },
-                {
-                    'filter': {
-                        'model': 'guia.specials'
-                    },
-                    'markerOptions' : {'shadow': specialMarksShadow},
-                    'events' : {
-                        'click': projetoToggle
-                    }
-                },
-                {
-                    'markerOptions' : {'icon': createSpecialMark(0)},
-                    'filter': {'nome':"Universidade Presbiteriana Mackenzie"}
-                },
-                {
-                    'markerOptions' : {'icon': createSpecialMark(1)},
-                    'filter': {'nome':"Associação Novolhar"}
-                }
-            ]
-        );
-
-    mapEl.loadMarkers(GLOBALS.URLS.lista_locais, {
-        'mapfunc': function(data){
-            data.fields.model = data.model;
-            return {
-                'lat':data.fields.latitude,
-                'lng':data.fields.longitude,
-                'data':data.fields,
-                'options': {
-                    'title': data.fields.nome
-                }
-            };
+        {
+            zoom: 16,
+            minZoom: 14,
+            center: new google.maps.LatLng(-23.55909, -46.64582),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
         }
-    });
-
-    mapEl.loadMarkers(GLOBALS.URLS.lista_locais_especiais, {
-        'mapfunc': function(data){
-            return {
-                'lat':data.latitude,
-                'lng':data.longitude,
-                'data': {
-                    'nome': data.nome,
-                    'model':'guia.specials'
-                },
-                'options': {
-                    'title': data.nome
-                }
-            };
-        }
-    });
+    );
 
     var homeControlDiv = $('<div />')
             .attr('class', 'logos-control')
             .attr('title', 'Sobre o projeto...')
-            .click(projetoToggle)
+            .click(function(){projetoToggle();})
             .get(0);
 
     homeControlDiv.index = 1;
     mapEl.map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(homeControlDiv);
 
+    google.maps.event.addListenerOnce(mapEl.map, 'idle', function() {
+        projetoToggle(loadData);
+    });
 
-    google.maps.event.addListenerOnce(mapEl.map, 'idle', projetoToggle);
+    function loadData() {
+
+        $.getJSON(
+            GLOBALS.URLS.lista_categorias,
+            function(raw_categories) {
+
+                var other_categories_count = 0;
+                var categories = $.map(raw_categories, function(raw) {
+                    if (raw.fields.icon_index === null) {
+                        other_categories_count += raw.extras.locals;
+                        return null;
+                    } else
+                        return {
+                            'nome': raw.fields.nome,
+                            'nome_slug': raw.fields.nome_slug,
+                            'icon_index': raw.fields.icon_index,
+                            'locals': raw.extras.locals
+                        };
+                });
+                categories.push({
+                    'nome': 'Outros',
+                    'nome_slug': 'outros',
+                    'icon_index': 0,
+                    'locals': other_categories_count
+                });
+
+                var categories_filter = $.map(categories, function(cat) {
+                    return {
+                        'markerOptions' : {'icon': createColorMark(cat.icon_index)},
+                        'filter': {'categoria':cat.nome}
+                    };
+                });
+
+                var mapFilters = [
+                        {
+                            'filter': {
+                                'model': 'guia.local'
+                            },
+                            'markerOptions' : {
+                                'shadow': marksShadow,
+                                'icon': createColorMark(5)
+                            },
+                            'events' : {
+                                'click': showLocalDetails
+                            }
+                        }
+                    ].concat(
+                        categories_filter,
+                    [
+                        {
+                            'filter': {
+                                'model': 'guia.specials'
+                            },
+                            'markerOptions' : {'shadow': specialMarksShadow},
+                            'events' : {
+                                'click': projetoToggle
+                            }
+                        },
+                        {
+                            'markerOptions' : {'icon': createSpecialMark(0)},
+                            'filter': {'nome':"Universidade Presbiteriana Mackenzie"}
+                        },
+                        {
+                            'markerOptions' : {'icon': createSpecialMark(1)},
+                            'filter': {'nome':"Associação Novolhar"}
+                        }
+                    ]);
+
+                mapEl.setFilters(mapFilters);
+
+                mapEl.loadMarkers(GLOBALS.URLS.lista_locais, {
+                    'mapfunc': function(data){
+                        data.fields.model = data.model;
+                        return {
+                            'lat':data.fields.latitude,
+                            'lng':data.fields.longitude,
+                            'data':data.fields,
+                            'options': {
+                                'title': data.fields.nome
+                            }
+                        };
+                    }
+                });
+
+                mapEl.loadMarkers(GLOBALS.URLS.lista_locais_especiais, {
+                    'mapfunc': function(data){
+                        return {
+                            'lat':data.latitude,
+                            'lng':data.longitude,
+                            'data': {
+                                'nome': data.nome,
+                                'model':'guia.specials'
+                            },
+                            'options': {
+                                'title': data.nome
+                            }
+                        };
+                    }
+                });
+
+                var mlControlButton = $('<button />')
+                    .addClass('btn btn-small btn-categorias')
+                    .attr('type', 'button')
+                    .html(' Categorias')
+                    .prepend($('<i />').addClass('icon-chevron-right'))
+                    .get(0);
+
+                mlControlButton.index = 1;
+                mapEl.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(mlControlButton);
+
+                mlControlButton
+            }
+        );
+    }
 });
