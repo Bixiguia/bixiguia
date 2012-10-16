@@ -1,6 +1,6 @@
 {% load thumbnail %}
 <div class="cabecalho">
-    <div class="categoria">{{ local.categoria }}</div>
+    <div class="categoria"><span class="marker" style="background-position:{{ local.categoria.markers_sprite_offset }}px 0;"></span> {{ local.categoria }}</div>
     <h2 class="nome">{{ local.nome }}</h2>
     <div class="endereco">{{ local.endereco }}{% if local.complemento %} - {{ local.complemento }}{% endif %}</div>
 </div>

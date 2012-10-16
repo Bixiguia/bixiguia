@@ -41,6 +41,21 @@ a:hover {
 .btn-categorias {
     font-weight:bold;
     margin:4px 6px;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.4) 0 2px 4px;
+    -moz-box-shadow:    rgba(0, 0, 0, 0.4) 0 2px 4px;
+    box-shadow:         rgba(0, 0, 0, 0.4) 0 2px 4px;
+}
+
+.marker {
+    width:12px;
+    height:20px;
+    display:inline-block;
+    background-image:url(../../imagens/mapa/marcadores/comuns.png);
+}
+
+.categoria .marker {
+    margin-bottom:-5px;
+    margin-right:2px;
 }
 
 .markers-label {

@@ -22,6 +22,9 @@ class Categoria(mixins.DataMixin):
     def natural_key(self):
         return self.nome
 
+    def markers_sprite_offset(self):
+        return -22 - (self.icon_index * 12)
+
     class Meta:
         ordering = ['nome', ]
 

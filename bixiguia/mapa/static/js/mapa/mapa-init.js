@@ -134,7 +134,7 @@ $(document).ready(function($){
                             },
                             'markerOptions' : {
                                 'shadow': marksShadow,
-                                'icon': createColorMark(5)
+                                'icon': createColorMark(0)
                             },
                             'events' : {
                                 'click': showLocalDetails
@@ -202,7 +202,7 @@ $(document).ready(function($){
                     .get(0);
 
                 mlControlButton.index = 1;
-                //mapEl.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(mlControlButton);
+                mapEl.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(mlControlButton);
             }
         );
     }
