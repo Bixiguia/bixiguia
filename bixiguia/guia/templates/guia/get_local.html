@@ -1,42 +1,42 @@
 {% load thumbnail %}
 <div class="cabecalho">
     <div class="categoria"><span class="marker" style="background-position:{{ local.categoria.markers_sprite_offset }}px 0;"></span> {{ local.categoria }}</div>
-    <h2 class="nome">{{ local.nome }}</h2>
+    <h3 class="nome">{{ local.nome }}</h3>
     <div class="endereco">{{ local.endereco }}{% if local.complemento %} - {{ local.complemento }}{% endif %}</div>
 </div>
 <div class="conteudo">
     <div class="dados">
-        <h3>Dados</h3>
+        <h4>Dados</h4>
         {% if local.site %}
         <p>
-            <span class="label">Site:</span>
+            <span class="clabel">Site:</span>
             <a class="destaque" href="{{ local.site }}">{{ local.site }}</a>
         </p>
         {% endif %}
         {% if local.email %}
         <p>
-            <span class="label">Email:</span>
+            <span class="clabel">Email:</span>
             <a class="destaque" href="mailto:{{ local.email }}">{{ local.email }}</a>
         </p>
         {% endif %}
         {% if local.ano_fundacao %}
         <p>
-            <span class="label">Ano de fundação:</span>{{ local.ano_fundacao }}
+            <span class="clabel">Ano de fundação:</span>{{ local.ano_fundacao }}
         </p>
         {% endif %}
         {% if local.contatos %}
         <p>
-            <span class="label">Contatos:</span>{{ local.contatos }}
+            <span class="clabel">Contatos:</span>{{ local.contatos }}
         </p>
         {% endif %}
         {% if local.horario_funcionamento %}
         <p>
-            <span class="label">Horário de funcionamento:</span>{{ local.horario_funcionamento }}
+            <span class="clabel">Horário de funcionamento:</span>{{ local.horario_funcionamento }}
         </p>
         {% endif %}
     </div>
     <div class="fotos">
-        <h3>Fotos</h3>
+        <h4>Fotos</h4>
         {% if local.fotos_visiveis %}
             <ul>
             {% for foto in local.fotos_visiveis %}
@@ -57,7 +57,7 @@
         {% endif %}
     </div>
     <div class="descricao">
-        <h3>Descrição</h3>
+        <h4>Descrição</h4>
         <p>{% if local.descricao %}
             {{ local.descricao }}
         {% else %}
@@ -66,7 +66,7 @@
         </p>
     </div>
     <div class="videos">
-        <h3>Vídeos</h3>
+        <h4>Vídeos</h4>
 
         {% if local.videos_visiveis %}
             <ul>

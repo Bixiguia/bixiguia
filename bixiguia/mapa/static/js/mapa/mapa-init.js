@@ -91,7 +91,7 @@ $(document).ready(function($){
     mapEl.map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(homeControlDiv);
 
     google.maps.event.addListenerOnce(mapEl.map, 'idle', function() {
-        projetoToggle(loadData);
+        loadData();
     });
 
     function loadData() {
@@ -105,7 +105,7 @@ $(document).ready(function($){
                     if (raw.fields.icon_index === null) {
                         other_categories_count += raw.extras.locals;
                         return null;
-                    } else
+                    } else if (raw.extras.locals > 0)
                         return {
                             'nome': raw.fields.nome,
                             'nome_slug': raw.fields.nome_slug,
@@ -113,12 +113,13 @@ $(document).ready(function($){
                             'locals': raw.extras.locals
                         };
                 });
-                categories.push({
-                    'nome': 'Outros',
-                    'nome_slug': 'outros',
-                    'icon_index': 0,
-                    'locals': other_categories_count
-                });
+                if (other_categories_count > 0)
+                    categories.push({
+                        'nome': 'Outros',
+                        'nome_slug': 'outros',
+                        'icon_index': 0,
+                        'locals': other_categories_count
+                    });
 
                 var categories_filter = $.map(categories, function(cat) {
                     return {
@@ -194,15 +195,61 @@ $(document).ready(function($){
                     }
                 });
 
-                var mlControlButton = $('<button />')
+
+                var markersListControl = $('<div />')
+                    .addClass('control-categorias');
+
+                var markersListControlButton = $('<button />')
                     .addClass('btn btn-small btn-categorias')
                     .attr('type', 'button')
                     .html(' Categorias')
                     .prepend($('<i />').addClass('icon-chevron-right'))
-                    .get(0);
+                    .appendTo(
+                        $('<div />')
+                            .addClass('btn-categorias-container')
+                            .appendTo(markersListControl)
+                    );
 
-                mlControlButton.index = 1;
-                mapEl.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(mlControlButton);
+                markersListControl.index = 1;
+                mapEl.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(markersListControl.get(0));
+
+                var mlControlList = $('<ul />')
+                    .attr('style', 'display:none;')
+                    .addClass('lista-categorias')
+                    .appendTo(markersListControl);
+
+                $.each(categories, function(index, categoria) {
+                    $('<li />')
+                        .append($('<a />')
+                            .attr('href', '#')
+                            .append(
+                                //$('<input />').attr('type', 'checkbox'),
+                                $('<i />').addClass('icon-ok check'),
+                                $('<span />').addClass('marker')
+                                    .attr('style', 'background-position:' + (-22 - (categoria.icon_index * 12)) + 'px'),
+                                $('<span />').addClass('nome').html(categoria.nome),
+                                $('<span />').addClass('locals').html('(' + categoria.locals + ')')
+                            )
+                        ).appendTo(mlControlList);
+                });
+
+                mlControlList.css({
+                    'opacity':0,
+                    'display':'block'
+                });
+
+                mlControlList.data('height', mlControlList.height());
+
+                mlControlList.css('height', 0);
+
+                mlControlList.animate({
+                    opacity:1,
+                    height: mlControlList.data('height')
+                }, 1000);
+
+
+                // (tot - lista-top) * 0.8
+
             }
         );
     }

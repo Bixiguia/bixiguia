@@ -25,9 +25,12 @@
     border-bottom:2px solid rgba(25,0,0,0.2);
 }
 
-#flip h2 {
-    font-family:'Coustard', serif;
+#flip h3 {
     margin:0;
+}
+
+#flip h3, #flip h4 {
+    font-family:'Coustard', serif;
 }
 
 #flip .content {
@@ -42,6 +45,11 @@
     position:absolute;
     left:6px;
     top:6px;
+    opacity:0.5;
+}
+
+#flip .close:hover {
+    opacity:1;
 }
 
 #flip .categoria {
@@ -64,7 +72,7 @@
     overflow:hidden;
 }
 
-#flip .dados .label{
+#flip .dados .clabel{
     display:block;
     font-weight:bold;
 }
