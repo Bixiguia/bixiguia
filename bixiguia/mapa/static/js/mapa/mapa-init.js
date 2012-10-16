@@ -91,7 +91,7 @@ $(document).ready(function($){
     mapEl.map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(homeControlDiv);
 
     google.maps.event.addListenerOnce(mapEl.map, 'idle', function() {
-        loadData();
+        projetoToggle(function(){loadData();});
     });
 
     function loadData() {
@@ -314,6 +314,7 @@ $(document).ready(function($){
                         });
                     });
 
+                    markersListControlButton.trigger('click');
 
                 }, 0);
 
