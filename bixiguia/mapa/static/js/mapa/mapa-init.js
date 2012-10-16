@@ -91,7 +91,7 @@ $(document).ready(function($){
     mapEl.map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(homeControlDiv);
 
     google.maps.event.addListenerOnce(mapEl.map, 'idle', function() {
-        projetoToggle(loadData);
+        loadData();
     });
 
     function loadData() {
@@ -105,7 +105,7 @@ $(document).ready(function($){
                     if (raw.fields.icon_index === null) {
                         other_categories_count += raw.extras.locals;
                         return null;
-                    } else
+                    } else if (raw.extras.locals > 0)
                         return {
                             'nome': raw.fields.nome,
                             'nome_slug': raw.fields.nome_slug,
@@ -113,12 +113,13 @@ $(document).ready(function($){
                             'locals': raw.extras.locals
                         };
                 });
-                categories.push({
-                    'nome': 'Outros',
-                    'nome_slug': 'outros',
-                    'icon_index': 0,
-                    'locals': other_categories_count
-                });
+                if (other_categories_count > 0)
+                    categories.push({
+                        'nome': 'Outros',
+                        'nome_slug': 'outros',
+                        'icon_index': 0,
+                        'locals': other_categories_count
+                    });
 
                 var categories_filter = $.map(categories, function(cat) {
                     return {
@@ -194,15 +195,128 @@ $(document).ready(function($){
                     }
                 });
 
-                var mlControlButton = $('<button />')
+
+                var markersListControl = $('<div />')
+                    .addClass('control-categorias');
+
+                var markersListControlButton = $('<button />')
                     .addClass('btn btn-small btn-categorias')
                     .attr('type', 'button')
                     .html(' Categorias')
                     .prepend($('<i />').addClass('icon-chevron-right'))
-                    .get(0);
+                    .appendTo(
+                        $('<div />')
+                            .addClass('btn-categorias-container')
+                            .appendTo(markersListControl)
+                    );
 
-                mlControlButton.index = 1;
-                mapEl.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(mlControlButton);
+                markersListControl.index = 1;
+                mapEl.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(markersListControl.get(0));
+
+                var mlControlList = $('<ul />')
+                    .css('visibility', 'hidden')
+                    .addClass('lista-categorias')
+                    .appendTo(markersListControl);
+
+                google.maps.event.addDomListener(markersListControlButton.get(0), 'click', function(){
+                    if (!$(this).hasClass('active')) {
+                        
+                        $(this).addClass('active')
+                            .children('i')
+                                .removeClass('icon-chevron-right')
+                                .addClass('icon-chevron-down');
+
+                        mlControlList
+                            .css('overflow', 'hidden')
+                            .animate({
+                                opacity:1,
+                                height: mlControlList.data('height')
+                            }, 1000, function(){
+                                $(this).css('overflow', 'auto');
+                        });
+
+                    } else {
+                        $(this).removeClass('active')
+                            .children('i')
+                                .removeClass('icon-chevron-right')
+                                .addClass('icon-chevron-down');
+
+                        mlControlList.css('overflow', 'hidden');
+                        mlControlList.animate({
+                            opacity:0,
+                            height: 0
+                        }, 1000);
+                    }
+                });
+
+                $(window).resize(function(){
+                    var maxFilterHeight = ($(mapEl.map.getDiv()).height() - ($(markersListControl).offset().top + $(markersListControl).children().first().outerHeight())) * 0.85;
+                    mlControlList
+                        .data('height', Math.min(mlControlList.data('full-height'), maxFilterHeight))
+                        .height(mlControlList.data('height'));
+                });
+
+                /* this settimeout with delay 0 let the map add the control to
+                    dom before we need to use it */
+                setTimeout(function() {
+
+                    $.each(categories, function(index, categoria) {
+                        $('<li />')
+                            .append($('<a />')
+                                .attr('href', '#')
+                                .data('categora-nome', categoria.nome)
+                                .append(
+                                    $('<i />').addClass('icon-ok check'),
+                                    $('<span />').addClass('marker')
+                                        .attr('style', 'background-position:' + (-22 - (categoria.icon_index * 12)) + 'px'),
+                                    $('<span />').addClass('nome').html(categoria.nome),
+                                    $('<span />').addClass('locals').html('(' + categoria.locals + ')')
+                                )
+                            ).appendTo(mlControlList);
+                    });
+
+                    mlControlList.css({
+                        'opacity':0,
+                        'visibility':'visible'
+                    });
+
+                    var maxFilterHeight = ($(mapEl.map.getDiv()).height() - ($(markersListControl).offset().top + $(markersListControl).children().first().outerHeight())) * 0.85;
+
+                    mlControlList
+                        .data('full-height', mlControlList.innerHeight())
+                        .data('height', Math.min(mlControlList.innerHeight(), maxFilterHeight))
+                        .css('height', 0);
+
+                    $('a', mlControlList).each(function(){
+                        $(this).data('active', true);
+                        google.maps.event.addDomListener(this, 'click', function(e){
+                            e.preventDefault();
+                            if ($(this).data('active')) {
+                                $(this)
+                                    .data('active', false)
+                                    .children('.check').css('opacity', 0.1)
+                                    .end()
+                                    .children('.marker').css('opacity', 0.8);
+                                mapEl.setMarkersVisibility(false, {
+                                    'categoria':$(this).data('categora-nome')
+                                });
+
+                            } else {
+                                $(this)
+                                    .data('active', true)
+                                    .children('.check').css('opacity', 0.6)
+                                    .end()
+                                    .children('.marker').css('opacity', 1);
+                                mapEl.setMarkersVisibility(true, {
+                                    'categoria':$(this).data('categora-nome')
+                                });
+                            }
+                        });
+                    });
+
+
+                }, 0);
+
             }
         );
     }
