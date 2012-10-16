@@ -179,6 +179,13 @@ var MapBoss = function(canvas, initOptions, markersClasses) {
         return false;
     };
 
+    this.setMarkersVisibility = function(visibility, filter) {
+        $.each(self.markers, function(){
+            if (self._match(this, {filter:filter})) {
+                this.raw.setVisible(visibility);
+            }
+        });
+    };
 
     this.getMatchingClasses = function(marker) {
 

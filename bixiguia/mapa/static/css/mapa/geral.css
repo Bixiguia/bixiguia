@@ -2,6 +2,7 @@ body, html {
     margin:0;
     padding:0;
     height:100%;
+    overflow:hidden;
 }
 
 a {
@@ -75,6 +76,7 @@ a:hover {
     border-radius: 8px;
     max-width:13em;
     list-style:none;
+    overflow:hidden;
 }
 
 .lista-categorias .check {
