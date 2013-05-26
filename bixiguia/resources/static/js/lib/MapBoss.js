@@ -7,6 +7,7 @@ var MapBoss = function(canvas, initOptions, markersClasses) {
         return new MapBoss(canvas, initOptions, markersClasses);
 
     var self = this;
+    var circleFilter = null;
 
     /*  merge das configurações iniciais com configurações padrão
         que centralizam o mapa no brasil usando o tipo ROADMAP */
@@ -99,6 +100,8 @@ var MapBoss = function(canvas, initOptions, markersClasses) {
                 atributo 'raw' na variável 'marker' */
             marker.raw = new google.maps.Marker(markerParams);
 
+            marker.queryVisibility = true;
+
             var events = [];
             if (getattr(self.defaultMarkerClass, 'events'))
                 events.push(getattr(self.defaultMarkerClass, 'events'));
@@ -189,8 +192,13 @@ var MapBoss = function(canvas, initOptions, markersClasses) {
         
         $.each(self.markers, function(){
             if (self._match(this, {filter:filter})) {
+
+                this.queryVisibility = visibility;
                 this.raw.setVisible(visibility);
                 validMarkers.push(this);
+
+                if (circleFilter && !self._isInCircle(this))
+                    this.raw.setVisible(false);
             }
         });
 
@@ -221,6 +229,27 @@ var MapBoss = function(canvas, initOptions, markersClasses) {
             });
         });
     };
+
+    this._updateCircle = function() {
+        $.each(self.markers, function(){
+            if (!circleFilter || (circleFilter && self._isInCircle(this)))
+                this.raw.setVisible(this.queryVisibility);
+            else
+                this.raw.setVisible(false);
+        });
+    }
+
+    this.setCircleArea = function (polygon) {
+        circleFilter = polygon;
+        self._updateCircle();
+    }
+
+    this._isInCircle = function(marker) {
+        var latLng = marker.raw.getPosition();
+        return (circleFilter.getBounds().contains(latLng)
+            && google.maps.geometry.spherical.computeDistanceBetween(
+                circleFilter.getCenter(), latLng) <= circleFilter.getRadius());
+    }
 
     this.setFilters(markersClasses);
 
