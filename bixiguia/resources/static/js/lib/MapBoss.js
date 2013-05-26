@@ -1,8 +1,9 @@
 var MapBoss = function(canvas, initOptions, markersClasses) {
+    "use strict";
 
     /*  Garante que a classe seja instanciada com o operador 'new'
         Referência: http://ejohn.org/apps/learn/#36 */
-    if (!(this instanceof MapBoss))
+    if (!this instanceof MapBoss)
         return new MapBoss(canvas, initOptions, markersClasses);
 
     var self = this;
@@ -10,10 +11,14 @@ var MapBoss = function(canvas, initOptions, markersClasses) {
     /*  merge das configurações iniciais com configurações padrão
         que centralizam o mapa no brasil usando o tipo ROADMAP */
     initOptions = $.extend({
-            zoom: 4,
-            center: new google.maps.LatLng(-14.782928,-52.382812),
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        }, initOptions);
+        zoom: 4,
+        center: new google.maps.LatLng(-14.782928,-52.382812),
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        styles: [{
+            featureType: "poi.business",
+            stylers: [{ visibility: "off" }]
+        }]
+    }, initOptions);
 
     /*  se o elemento canvas passado for elemento jquery, retorna
         seu primeiro filho, o elemento DOM selecionado */
@@ -180,11 +185,16 @@ var MapBoss = function(canvas, initOptions, markersClasses) {
     };
 
     this.setMarkersVisibility = function(visibility, filter) {
+        var validMarkers = []
+        
         $.each(self.markers, function(){
             if (self._match(this, {filter:filter})) {
                 this.raw.setVisible(visibility);
+                validMarkers.push(this);
             }
         });
+
+        return validMarkers;
     };
 
     this.getMatchingClasses = function(marker) {
