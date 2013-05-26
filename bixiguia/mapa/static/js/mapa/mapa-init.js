@@ -1,5 +1,6 @@
 
 function showLocalDetails(marker){
+    "use strict";
 
     marker.raw.setAnimation(google.maps.Animation.BOUNCE);
 
@@ -28,8 +29,9 @@ function showLocalDetails(marker){
 }
 
 $(document).ready(function($){
+    "use strict";
 
-    flip = Flip();
+    window.flip = Flip();
 
     function projetoToggle(callback) {
         flip.show(
@@ -48,14 +50,15 @@ $(document).ready(function($){
         );
     }
 
-    function createSpecialMark(position) {
+    window.createSpecialMark = function (position) {
+
         return new google.maps.MarkerImage(
             GLOBALS.URLS.STATIC_URL + 'imagens/mapa/marcadores/especiais.png',
             new google.maps.Size(30, 40),
             new google.maps.Point(position*30, 0),
             new google.maps.Point(15, 38)
         );
-    }
+    };
 
     var marksShadow = new google.maps.MarkerImage(
         GLOBALS.URLS.STATIC_URL + 'imagens/mapa/marcadores/sombra.png',
@@ -71,8 +74,8 @@ $(document).ready(function($){
         new google.maps.Point(15, 38)
     );
 
-
-    mapEl = new MapBoss($('#map_canvas'),
+    google.maps.visualRefresh = true;
+    window.mapEl = new MapBoss($('#map_canvas'),
         {
             zoom: 16,
             minZoom: 14,
@@ -195,9 +198,8 @@ $(document).ready(function($){
                     }
                 });
 
-
                 var markersListControl = $('<div />')
-                    .addClass('control-categorias');
+                    .addClass('custom-control');
 
                 var markersListControlButton = $('<button />')
                     .addClass('btn btn-small btn-categorias')
@@ -317,6 +319,8 @@ $(document).ready(function($){
                     markersListControlButton.trigger('click');
 
                 }, 0);
+
+                addGeoLocationOption(mapEl, google.maps.ControlPosition.LEFT_BOTTOM);
 
             }
         );

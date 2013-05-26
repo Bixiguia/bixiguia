@@ -21,6 +21,7 @@ dist
 *.pyo
 *.tmp*
 .codeintel
+.idea
 bixiguia.sublime-project
 bixiguia.sublime-workspace
 merged_static

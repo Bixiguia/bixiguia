@@ -1,19 +1,25 @@
 var MapBoss = function(canvas, initOptions, markersClasses) {
+    "use strict";
 
     /*  Garante que a classe seja instanciada com o operador 'new'
         Referência: http://ejohn.org/apps/learn/#36 */
-    if (!(this instanceof MapBoss))
+    if (!this instanceof MapBoss)
         return new MapBoss(canvas, initOptions, markersClasses);
 
     var self = this;
+    var circleFilter = null;
 
     /*  merge das configurações iniciais com configurações padrão
         que centralizam o mapa no brasil usando o tipo ROADMAP */
     initOptions = $.extend({
-            zoom: 4,
-            center: new google.maps.LatLng(-14.782928,-52.382812),
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        }, initOptions);
+        zoom: 4,
+        center: new google.maps.LatLng(-14.782928,-52.382812),
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        styles: [{
+            featureType: "poi.business",
+            stylers: [{ visibility: "off" }]
+        }]
+    }, initOptions);
 
     /*  se o elemento canvas passado for elemento jquery, retorna
         seu primeiro filho, o elemento DOM selecionado */
@@ -93,6 +99,8 @@ var MapBoss = function(canvas, initOptions, markersClasses) {
                 adiciona esse marcador no mapa e o salva como o
                 atributo 'raw' na variável 'marker' */
             marker.raw = new google.maps.Marker(markerParams);
+
+            marker.queryVisibility = true;
 
             var events = [];
             if (getattr(self.defaultMarkerClass, 'events'))
@@ -180,11 +188,21 @@ var MapBoss = function(canvas, initOptions, markersClasses) {
     };
 
     this.setMarkersVisibility = function(visibility, filter) {
+        var validMarkers = []
+        
         $.each(self.markers, function(){
             if (self._match(this, {filter:filter})) {
+
+                this.queryVisibility = visibility;
                 this.raw.setVisible(visibility);
+                validMarkers.push(this);
+
+                if (circleFilter && !self._isInCircle(this))
+                    this.raw.setVisible(false);
             }
         });
+
+        return validMarkers;
     };
 
     this.getMatchingClasses = function(marker) {
@@ -211,6 +229,27 @@ var MapBoss = function(canvas, initOptions, markersClasses) {
             });
         });
     };
+
+    this._updateCircle = function() {
+        $.each(self.markers, function(){
+            if (!circleFilter || (circleFilter && self._isInCircle(this)))
+                this.raw.setVisible(this.queryVisibility);
+            else
+                this.raw.setVisible(false);
+        });
+    }
+
+    this.setCircleArea = function (polygon) {
+        circleFilter = polygon;
+        self._updateCircle();
+    }
+
+    this._isInCircle = function(marker) {
+        var latLng = marker.raw.getPosition();
+        return (circleFilter.getBounds().contains(latLng)
+            && google.maps.geometry.spherical.computeDistanceBetween(
+                circleFilter.getCenter(), latLng) <= circleFilter.getRadius());
+    }
 
     this.setFilters(markersClasses);
 
