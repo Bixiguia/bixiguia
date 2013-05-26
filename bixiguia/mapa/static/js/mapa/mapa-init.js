@@ -28,8 +28,9 @@ function showLocalDetails(marker){
 }
 
 $(document).ready(function($){
+    "use strict";
 
-    flip = Flip();
+    window.flip = Flip();
 
     function projetoToggle(callback) {
         flip.show(
@@ -71,8 +72,8 @@ $(document).ready(function($){
         new google.maps.Point(15, 38)
     );
 
-
-    mapEl = new MapBoss($('#map_canvas'),
+    google.maps.visualRefresh = true;
+    window.mapEl = new MapBoss($('#map_canvas'),
         {
             zoom: 16,
             minZoom: 14,
