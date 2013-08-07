@@ -149,7 +149,7 @@ var MapBoss = function(canvas, initOptions, markersClasses) {
         }
     };
 
-    this.loadMarkers = function(markers, options){
+    this.loadMarkers = function(markers, options, cb){
 
         options = $.extend(
             {
@@ -163,7 +163,7 @@ var MapBoss = function(canvas, initOptions, markersClasses) {
             options.startfunc();
             $.getJSON(markers, function(data){
                 options.endfunc();
-                self.loadMarkers(data, options);
+                self.loadMarkers(data, options, cb);
             });
             return;
         }
@@ -172,6 +172,8 @@ var MapBoss = function(canvas, initOptions, markersClasses) {
             markers = $.map(markers, options.mapfunc);
 
         createMarkers(markers);
+        if (cb)
+            cb();
     };
 
 

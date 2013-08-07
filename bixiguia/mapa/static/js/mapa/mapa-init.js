@@ -1,4 +1,11 @@
 
+
+
+function updateHash(marker) {
+    "use strict";
+    window.location.hash = 'p=' + marker.data.nome_slug;
+}
+
 function showLocalDetails(marker){
     "use strict";
 
@@ -7,6 +14,7 @@ function showLocalDetails(marker){
     $.ajax({
         url: GLOBALS.URLS.detalha_local.replace('999', marker.data.nome_slug),
         success: function(data) {
+            updateHash(marker);
             flip.show(
                 $(data).filter('.cabecalho').html(),
                 $(data).filter('.conteudo').html()
@@ -179,6 +187,18 @@ $(document).ready(function($){
                                 'title': data.fields.nome
                             }
                         };
+                    }
+                }, function(){
+                    var matches = window.location.hash.match(/(#p|&p)=(.+?)(&|$)/);
+
+                    if (matches && matches.length >= 3) {
+                        var slug = matches[2];
+                        for (var i=0; i<mapEl.markers.length; i++) {
+                            var marker = mapEl.markers[i];
+                            if (marker.data.nome_slug &&
+                                marker.data.nome_slug === slug)
+                                showLocalDetails(marker);
+                        }
                     }
                 });
 

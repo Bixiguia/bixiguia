@@ -60,6 +60,8 @@
 
         this.close = function(speed){
 
+            window.location.hash = '';
+
             if (typeof speed == "undefined")
                 speed = this.settings.speed;
 
