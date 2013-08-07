@@ -56,6 +56,7 @@
                         callback();
                 });
             }
+            if (FB) FB.XFBML.parse();
         };
 
         this.close = function(speed){

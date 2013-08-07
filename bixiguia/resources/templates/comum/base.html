@@ -10,9 +10,19 @@
     <link href="{{ STATIC_URL }}css/colorbox.css" rel='stylesheet' type='text/css' />
     <link href='http://fonts.googleapis.com/css?family=Coustard' rel='stylesheet' type='text/css' />
     <link href='http://fonts.googleapis.com/css?family=Anton' rel='stylesheet' type='text/css'>
+
+    <meta property="fb:admins" content="1060648243"/>
     {% block extra_css %}{% endblock %}
 </head>
 <body>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/pt_BR/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 {% block body %}
 {% endblock %}
     <script type="text/javascript" src="{% url globals_js %}"></script>

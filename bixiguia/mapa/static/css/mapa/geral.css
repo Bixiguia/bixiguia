@@ -121,3 +121,5 @@ a:hover {
     font-style:italic;
     font-size:90%;
 }
+
+.fb-comments, .fb-comments iframe[style] {width: 100% !important;}
