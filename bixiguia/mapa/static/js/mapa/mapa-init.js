@@ -15,12 +15,12 @@ function showLocalDetails(marker){
             $('#flip .fotos a').colorbox({
                 rel:'fotos',
                 'opacity': 0.7,
-                'previous': 'Anterior',
-                'next': 'Próxima',
-                'close': 'Fechar',
-                'current': 'imagem {current} de {total}',
-                'maxHeight' : '80%',
-                'maxWidth': '80%'
+                'previous': '&laquo;',
+                'next': '&raquo;',
+                'close': 'x',
+                'current': '{current}/{total}',
+                'maxHeight' : '90%',
+                'maxWidth': '90%'
             });
 
             marker.raw.setAnimation(null);

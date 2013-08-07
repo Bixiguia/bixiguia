@@ -65,10 +65,7 @@
 }
 
 #flip .dados {
-    float:left;
-    width: 250px;
     font-size:10pt;
-    padding-left:10px;
     overflow:hidden;
 }
 
@@ -79,13 +76,11 @@
 
 #flip .descricao,
 #flip .videos {
-    margin:0 290px 0 290px;
-    padding-right: 30px;
     font-size:11pt;
 }
 
 #flip .videos {
-    margin-top:40px;
+    margin-top:20px;
     padding-top:20px;
 }
 
@@ -104,17 +99,16 @@
 }
 
 #flip .fotos {
-    float:right;
-    width:250px;
-    padding-right:10px;
     font-size:11pt;
 }
 
 #flip .fotos ul {
     margin:1.6em 0;
+    list-style: none;
 }
 
 #flip .fotos a {
+    clear:both;
     background:#FFF;
     float: left;
     padding: 6px 6px 2px 6px;
