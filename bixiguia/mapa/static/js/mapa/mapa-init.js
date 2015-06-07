@@ -42,11 +42,12 @@ $(document).ready(function($){
     window.flip = Flip();
 
     function projetoToggle(callback) {
-        flip.show(
-            $('#projeto-info .header').html(),
-            $('#projeto-info .content').html(),
-            callback
-        );
+        callback();
+        //flip.show(
+        //    $('#projeto-info .header').html(),
+        //    $('#projeto-info .content').html(),
+        //    callback
+        //);
     }
 
     function createColorMark(position) {
