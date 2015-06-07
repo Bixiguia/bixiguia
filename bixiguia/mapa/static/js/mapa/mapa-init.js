@@ -100,7 +100,7 @@ $(document).ready(function($){
             .get(0);
 
     homeControlDiv.index = 1;
-    mapEl.map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(homeControlDiv);
+    //mapEl.map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(homeControlDiv);
 
     google.maps.event.addListenerOnce(mapEl.map, 'idle', function() {
         projetoToggle(function(){loadData();});
